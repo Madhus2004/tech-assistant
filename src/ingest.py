@@ -7,6 +7,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from src.helper import load_all_documents
 
+
 load_dotenv()
 
 
@@ -48,6 +49,22 @@ def initialize_pinecone_index(index_name: str) -> None:
     else:
         print(f"Index '{index_name}' already exists. Skipping creation.")
 
+def clear_pinecone_index(index_name: str) -> None:
+    """
+    Deletes all vectors from all namespaces in the index.
+    Used before re-ingestion to prevent duplicate chunks.
+    """
+    pc = get_pinecone_client() if False else Pinecone(
+        api_key=os.getenv("PINECONE_API_KEY")
+    )
+    index = pc.Index(index_name)
+
+    roles = ["intern", "engineer", "manager", "executive"]
+    for namespace in roles:
+        print(f"Clearing namespace: {namespace}...")
+        index.delete(delete_all=True, namespace=namespace)
+
+    print("All namespaces cleared.\n")
 
 def ingest_role_chunks(chunks: list, role: str,
                        embeddings: HuggingFaceEmbeddings,

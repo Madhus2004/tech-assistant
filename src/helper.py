@@ -3,6 +3,9 @@ import os
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from dotenv import load_dotenv
+import json
+import pickle
+
 
 load_dotenv()
 
@@ -90,4 +93,81 @@ def load_all_documents(data_dir: str = "data") -> dict:
         all_chunks[role] = chunks
         print(f"[{role}] Ready: {len(chunks)} chunks\n")
 
+    return all_chunks
+
+def load_raw_text_by_role(data_dir: str = "data") -> dict:
+    """
+    Loads raw text content from all markdown files grouped by role.
+    Used for building the BM25 index.
+
+    Returns:
+        dict: {role: [{"text": str, "source": str, "role": str}]}
+    """
+    roles = ["intern", "engineer", "manager", "executive"]
+    role_texts = {}
+
+    for role in roles:
+        role_path = os.path.join(data_dir, role)
+        texts = []
+
+        for filename in os.listdir(role_path):
+            if filename.endswith(".md"):
+                filepath = os.path.join(role_path, filename)
+                with open(filepath, "r", encoding="utf-8") as f:
+                    content = f.read()
+
+                source = os.path.splitext(filename)[0]
+                texts.append({
+                    "text": content,
+                    "source": source,
+                    "role": role
+                })
+
+        role_texts[role] = texts
+        print(f"[BM25] Loaded {len(texts)} raw docs for role: {role}")
+
+    return role_texts
+
+
+def chunk_text_for_bm25(role_texts: dict,
+                         chunk_size: int = 500,
+                         chunk_overlap: int = 50) -> list:
+    """
+    Chunks raw text documents for BM25 indexing.
+    Returns a flat list of chunk dicts with metadata.
+
+    Returns:
+        list: [{"text": str, "source": str, "role": str, "chunk_index": int}]
+    """
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain.schema import Document
+
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        separators=["\n\n", "\n", ". ", " ", ""]
+    )
+
+    all_chunks = []
+    chunk_index = 0
+
+    for role, docs in role_texts.items():
+        for doc in docs:
+            # Wrap in LangChain Document for splitting
+            lc_doc = Document(
+                page_content=doc["text"],
+                metadata={"source": doc["source"], "role": doc["role"]}
+            )
+            split_docs = splitter.split_documents([lc_doc])
+
+            for split in split_docs:
+                all_chunks.append({
+                    "text": split.page_content,
+                    "source": split.metadata["source"],
+                    "role": split.metadata["role"],
+                    "chunk_index": chunk_index
+                })
+                chunk_index += 1
+
+    print(f"[BM25] Total chunks for BM25 index: {len(all_chunks)}")
     return all_chunks
