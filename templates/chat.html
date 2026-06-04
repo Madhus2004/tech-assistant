@@ -1,13 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Chat</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechNova — Knowledge Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="chat-page">
 
-<h2>Logged in as: {{ role }}</h2>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">TN</div>
+            <span>TechNova</span>
+        </div>
 
-<h3>Enterprise Knowledge Assistant</h3>
+        <div class="user-card">
+            <div class="user-info">
+                <p class="user-name">{{ user.display_name }}</p>
+                <p class="user-username">@{{ user.username }}</p>
+            </div>
+            <span class="role-badge {{ badge_color }}">
+                {{ user.role | capitalize }}
+            </span>
+        </div>
 
+        <div class="sidebar-section">
+            <p class="sidebar-label">Access Level</p>
+            <div class="access-tiers">
+                <div class="tier tier-intern {% if user.role in ['intern','engineer','manager','executive'] %}active{% endif %}">
+                    Intern docs
+                </div>
+                <div class="tier tier-engineer {% if user.role in ['engineer','manager','executive'] %}active{% endif %}">
+                    Engineer docs
+                </div>
+                <div class="tier tier-manager {% if user.role in ['manager','executive'] %}active{% endif %}">
+                    Manager docs
+                </div>
+                <div class="tier tier-executive {% if user.role == 'executive' %}active{% endif %}">
+                    Executive docs
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <a href="/logout" class="btn-logout">Sign Out</a>
+        </div>
+    </aside>
+
+    <!-- Main chat area -->
+    <main class="chat-main">
+
+        <div class="chat-header">
+            <h2>Knowledge Assistant</h2>
+            <p>Ask anything about TechNova policies, processes, and documentation.</p>
+        </div>
+
+        <div class="chat-messages" id="chat-messages">
+            <div class="message assistant-message">
+                <div class="message-content">
+                    Hello {{ user.display_name }}! I'm your TechNova knowledge assistant.
+                    I can answer questions based on the documents available to your
+                    <strong>{{ user.role }}</strong> role. What would you like to know?
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <div class="suggested-questions">
+                <button class="suggestion-btn" onclick="askSuggestion(this)">
+                    How do I apply for leave?
+                </button>
+                <button class="suggestion-btn" onclick="askSuggestion(this)">
+                    What are the coding standards?
+                </button>
+                <button class="suggestion-btn" onclick="askSuggestion(this)">
+                    How do I deploy a service?
+                </button>
+            </div>
+
+            <div class="input-row">
+                <textarea
+                    id="question-input"
+                    placeholder="Ask a question about TechNova policies and processes..."
+                    rows="1"
+                    onkeydown="handleKeyDown(event)"
+                ></textarea>
+                <button id="send-btn" onclick="sendQuestion()">Send</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
