@@ -120,7 +120,7 @@ def hybrid_retrieve(query: str, role: str,
     # Merge with RRF
     merged = reciprocal_rank_fusion(dense_docs, sparse_results)
 
-    # Return top_k after fusion
+    #Return top_k after fusion
     final_results = merged[:top_k]
 
     print(f"[Hybrid] Final chunks returned: {len(final_results)}")
