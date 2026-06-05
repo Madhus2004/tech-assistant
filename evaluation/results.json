@@ -1,0 +1,351 @@
+{
+  "summary": {
+    "total": 12,
+    "retrieval_hits": 12,
+    "rbac_correct": 12,
+    "avg_keyword_hit_rate": 0.81,
+    "by_category": {
+      "process": {
+        "total": 2,
+        "avg_keyword_hit_rate": 0.67
+      },
+      "policy": {
+        "total": 1,
+        "avg_keyword_hit_rate": 1.0
+      },
+      "technical": {
+        "total": 2,
+        "avg_keyword_hit_rate": 1.0
+      },
+      "strategic": {
+        "total": 2,
+        "avg_keyword_hit_rate": 0.67
+      },
+      "rbac_enforcement": {
+        "total": 3,
+        "avg_keyword_hit_rate": 0.67
+      },
+      "hr": {
+        "total": 1,
+        "avg_keyword_hit_rate": 1.0
+      },
+      "financial": {
+        "total": 1,
+        "avg_keyword_hit_rate": 1.0
+      }
+    },
+    "by_role": {
+      "intern": {
+        "total": 3,
+        "avg_keyword_hit_rate": 0.83
+      },
+      "engineer": {
+        "total": 3,
+        "avg_keyword_hit_rate": 0.83
+      },
+      "manager": {
+        "total": 3,
+        "avg_keyword_hit_rate": 0.78
+      },
+      "executive": {
+        "total": 3,
+        "avg_keyword_hit_rate": 0.78
+      }
+    },
+    "failed_cases": [
+      "manager_002"
+    ]
+  },
+  "results": [
+    {
+      "id": "intern_001",
+      "question": "How do I apply for leave?",
+      "role": "intern",
+      "category": "policy",
+      "should_answer": true,
+      "sources_retrieved": [
+        "onboarding_guide",
+        "onboarding_guide",
+        "training_guide",
+        "training_guide"
+      ],
+      "source_hit": true,
+      "keyword_hit_rate": 1.0,
+      "keywords_found": [
+        "leave",
+        "jira",
+        "5 business days"
+      ],
+      "keywords_missed": [],
+      "rbac_correct": true,
+      "answer_preview": "To apply for leave, submit a request in Jira under the HR project at least 5 business days in advance. For leaves longer than 3 days, also notify your direct manager via Slack in addition to the Jira ",
+      "answer_length": 235
+    },
+    {
+      "id": "intern_002",
+      "question": "What is the pull request process?",
+      "role": "intern",
+      "category": "process",
+      "should_answer": true,
+      "sources_retrieved": [
+        "coding_standards",
+        "coding_standards",
+        "onboarding_guide",
+        "onboarding_guide"
+      ],
+      "source_hit": true,
+      "keyword_hit_rate": 1.0,
+      "keywords_found": [
+        "pull request",
+        "reviewer",
+        "jira"
+      ],
+      "keywords_missed": [],
+      "rbac_correct": true,
+      "answer_preview": "To create a pull request, follow these steps:\n\n1. Ensure your commit message follows the format: type(scope): short description (Source: coding_standards)\n2. Make sure your code changes do not exceed ",
+      "answer_length": 601
+    },
+    {
+      "id": "intern_003",
+      "question": "What is the company annual revenue?",
+      "role": "intern",
+      "category": "rbac_enforcement",
+      "should_answer": false,
+      "sources_retrieved": [
+        "training_guide",
+        "onboarding_guide",
+        "onboarding_guide",
+        "coding_standards"
+      ],
+      "source_hit": false,
+      "keyword_hit_rate": 0.5,
+      "keywords_found": [
+        "don't have information"
+      ],
+      "keywords_missed": [
+        "not available"
+      ],
+      "rbac_correct": true,
+      "answer_preview": "I don't have information about the company annual revenue in the documents available to your role.",
+      "answer_length": 98
+    },
+    {
+      "id": "engineer_001",
+      "question": "How do I rollback a failed deployment?",
+      "role": "engineer",
+      "category": "technical",
+      "should_answer": true,
+      "sources_retrieved": [
+        "deployment_runbook",
+        "deployment_runbook",
+        "deployment_runbook",
+        "coding_standards"
+      ],
+      "source_hit": true,
+      "keyword_hit_rate": 1.0,
+      "keywords_found": [
+        "rollback",
+        "github actions",
+        "cloudwatch"
+      ],
+      "keywords_missed": [],
+      "rbac_correct": true,
+      "answer_preview": "To rollback a failed deployment:\n\n1. Immediately notify #incidents in Slack.\n2. In the GitHub Actions UI, find the last successful deployment.\n3. Click \"Re-run\" on the previous successful workflow to ",
+      "answer_length": 495
+    },
+    {
+      "id": "engineer_002",
+      "question": "What is a Sev-1 incident?",
+      "role": "engineer",
+      "category": "technical",
+      "should_answer": true,
+      "sources_retrieved": [
+        "incident_response",
+        "incident_response",
+        "coding_standards",
+        "onboarding_guide"
+      ],
+      "source_hit": true,
+      "keyword_hit_rate": 1.0,
+      "keywords_found": [
+        "sev-1",
+        "outage",
+        "15 minutes"
+      ],
+      "keywords_missed": [],
+      "rbac_correct": true,
+      "answer_preview": "A Sev-1 incident is a critical incident that results in a complete service outage or data loss affecting all customers. Examples include a production database being unreachable, authentication service",
+      "answer_length": 351
+    },
+    {
+      "id": "engineer_003",
+      "question": "What are the company growth targets?",
+      "role": "engineer",
+      "category": "rbac_enforcement",
+      "should_answer": false,
+      "sources_retrieved": [
+        "onboarding_guide",
+        "onboarding_guide",
+        "coding_standards",
+        "training_guide"
+      ],
+      "source_hit": false,
+      "keyword_hit_rate": 0.5,
+      "keywords_found": [
+        "don't have information"
+      ],
+      "keywords_missed": [
+        "not available"
+      ],
+      "rbac_correct": true,
+      "answer_preview": "I don't have information about that in the documents available to your role.",
+      "answer_length": 76
+    },
+    {
+      "id": "manager_001",
+      "question": "What are the promotion requirements?",
+      "role": "manager",
+      "category": "hr",
+      "should_answer": true,
+      "sources_retrieved": [
+        "performance_reviews",
+        "onboarding_guide",
+        "training_guide",
+        "project_management"
+      ],
+      "source_hit": true,
+      "keyword_hit_rate": 1.0,
+      "keywords_found": [
+        "promotion",
+        "rating",
+        "4 or above"
+      ],
+      "keywords_missed": [],
+      "rbac_correct": true,
+      "answer_preview": "To be eligible for a promotion, an employee must receive a rating of 4 or above for two consecutive review cycles and demonstrate readiness for the next level by leading a project, mentoring a junior ",
+      "answer_length": 281
+    },
+    {
+      "id": "manager_002",
+      "question": "Who approves software purchases?",
+      "role": "manager",
+      "category": "process",
+      "should_answer": true,
+      "sources_retrieved": [
+        "engineering_handbook",
+        "budget_policy",
+        "budget_policy",
+        "training_guide"
+      ],
+      "source_hit": true,
+      "keyword_hit_rate": 0.33,
+      "keywords_found": [
+        "software"
+      ],
+      "keywords_missed": [
+        "approval",
+        "it security"
+      ],
+      "rbac_correct": true,
+      "answer_preview": "All new software tools must be approved before purchase, regardless of the manager's spending limit. This is to ensure security review requirements, compliance obligations, and IT onboarding costs are",
+      "answer_length": 259
+    },
+    {
+      "id": "manager_003",
+      "question": "What is the company acquisition strategy?",
+      "role": "manager",
+      "category": "rbac_enforcement",
+      "should_answer": false,
+      "sources_retrieved": [
+        "onboarding_guide",
+        "incident_response",
+        "onboarding_guide",
+        "project_management"
+      ],
+      "source_hit": false,
+      "keyword_hit_rate": 1.0,
+      "keywords_found": [
+        "don't have information",
+        "not available"
+      ],
+      "keywords_missed": [],
+      "rbac_correct": true,
+      "answer_preview": "I don't have information about the company acquisition strategy in the documents available to your role.\n\n[Source: None cited, as the information is not available in the provided context]",
+      "answer_length": 187
+    },
+    {
+      "id": "executive_001",
+      "question": "What was the annual revenue in FY2024?",
+      "role": "executive",
+      "category": "financial",
+      "should_answer": true,
+      "sources_retrieved": [
+        "financial_overview",
+        "financial_overview",
+        "training_guide",
+        "training_guide"
+      ],
+      "source_hit": true,
+      "keyword_hit_rate": 1.0,
+      "keywords_found": [
+        "48",
+        "revenue",
+        "arr"
+      ],
+      "keywords_missed": [],
+      "rbac_correct": true,
+      "answer_preview": "TechNova closed FY2024 with $48.2M in Annual Recurring Revenue (ARR). [Source: financial_overview]",
+      "answer_length": 98
+    },
+    {
+      "id": "executive_002",
+      "question": "What are the top company risks?",
+      "role": "executive",
+      "category": "strategic",
+      "should_answer": true,
+      "sources_retrieved": [
+        "governance_handbook",
+        "governance_handbook",
+        "training_guide",
+        "onboarding_guide"
+      ],
+      "source_hit": true,
+      "keyword_hit_rate": 0.67,
+      "keywords_found": [
+        "risk",
+        "ml engineers"
+      ],
+      "keywords_missed": [
+        "retention"
+      ],
+      "rbac_correct": true,
+      "answer_preview": "The current top risks as of Q4 FY2024 are:\n\n1. Key person dependency on 3 ML engineers (score: 16)\n2. EU regulatory compliance for Amsterdam expansion (score: 14)\n3. Customer concentration \u2014 top 3 cus",
+      "answer_length": 270
+    },
+    {
+      "id": "executive_003",
+      "question": "What are the European market revenue targets?",
+      "role": "executive",
+      "category": "strategic",
+      "should_answer": true,
+      "sources_retrieved": [
+        "project_management",
+        "strategic_growth_plan",
+        "strategic_growth_plan",
+        "financial_overview"
+      ],
+      "source_hit": true,
+      "keyword_hit_rate": 0.67,
+      "keywords_found": [
+        "european",
+        "4.2"
+      ],
+      "keywords_missed": [
+        "amsterdam"
+      ],
+      "rbac_correct": true,
+      "answer_preview": "The European market revenue target for FY2025 is $4.2M. \n\n[Source: Source 3: strategic_growth_plan]",
+      "answer_length": 99
+    }
+  ]
+}

@@ -8,6 +8,9 @@ from src.retriever import retrieve_documents, format_context
 from src.prompt import build_prompt, SYSTEM_PROMPT
 from langchain_groq import ChatGroq
 from langchain.schema import SystemMessage, HumanMessage
+from src.hybrid_retriever import hybrid_retrieve
+from src.retriever import format_context
+
 
 load_dotenv()
 
@@ -100,7 +103,7 @@ def ask():
 
     try:
         # Step 1: Retrieve relevant documents (RBAC enforced here)
-        documents = retrieve_documents(query=question, role=role, top_k=4)
+        documents = hybrid_retrieve(query=question, role=role, top_k=4)
 
         # Step 2: Format context for LLM
         context = format_context(documents)
