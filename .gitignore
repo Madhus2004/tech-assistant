@@ -35,4 +35,3 @@ notes.txt
 data/
 
 .env.docker
-bm25_index.pkl
