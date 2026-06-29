@@ -6,24 +6,11 @@ from pinecone import Pinecone, ServerlessSpec
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from src.helper import load_all_documents
-
+from src.embeddings import get_embeddings
 
 load_dotenv()
 
 
-def get_embedding_model() -> HuggingFaceEmbeddings:
-    """
-    Initializes the local HuggingFace embedding model.
-    Uses all-MiniLM-L6-v2 which produces 384-dimensional vectors.
-    """
-    print("Loading embedding model...")
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2",
-        model_kwargs={"device": "cpu"},
-        encode_kwargs={"normalize_embeddings": True}
-    )
-    print("Embedding model loaded.")
-    return embeddings
 
 
 def initialize_pinecone_index(index_name: str) -> None:
@@ -51,20 +38,27 @@ def initialize_pinecone_index(index_name: str) -> None:
 
 def clear_pinecone_index(index_name: str) -> None:
     """
-    Deletes all vectors from all namespaces in the index.
-    Used before re-ingestion to prevent duplicate chunks.
+    Clears all vectors from all namespaces.
+    Uses list-then-delete approach for Pinecone serverless compatibility.
     """
-    pc = get_pinecone_client() if False else Pinecone(
-        api_key=os.getenv("PINECONE_API_KEY")
-    )
-    index = pc.Index(index_name)
+    pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 
-    roles = ["intern", "engineer", "manager", "executive"]
-    for namespace in roles:
-        print(f"Clearing namespace: {namespace}...")
-        index.delete(delete_all=True, namespace=namespace)
+    existing_indexes = [i.name for i in pc.list_indexes()]
 
-    print("All namespaces cleared.\n")
+    if index_name not in existing_indexes:
+        print(f"Index '{index_name}' does not exist yet. "
+              f"Skipping clear — will be created during ingestion.\n")
+        return
+
+    # For serverless indexes, delete the index entirely and recreate
+    # This is more reliable than namespace-level deletion on serverless
+    print(f"Deleting index '{index_name}' for clean re-ingestion...")
+    pc.delete_index(index_name)
+
+    # Wait for deletion to complete
+    import time
+    time.sleep(5)
+    print("Index deleted. Will be recreated during ingestion.\n")
 
 def ingest_role_chunks(chunks: list, role: str,
                        embeddings: HuggingFaceEmbeddings,
@@ -111,7 +105,7 @@ def run_ingestion() -> None:
     print("=" * 50)
     print("STEP 2: Loading embedding model")
     print("=" * 50)
-    embeddings = get_embedding_model()
+    embeddings = get_embeddings()
 
     # Step 3: Initialize Pinecone
     print("=" * 50)

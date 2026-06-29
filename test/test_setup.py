@@ -1,4 +1,13 @@
 # test_setup.py
+import sys
+import os
+
+# Add project root to Python path so src/ is findable
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from src.retriever import retrieve_documents, format_context
+
+
 from dotenv import load_dotenv
 from langchain_huggingface import HuggingFaceEmbeddings
 from pinecone import Pinecone

@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.git/
+.gitignore
+.env
+evaluation/results.json
+*.md
+README.md
+test_setup.py
+test_retrieval.py
+test_ingestion.py
+.pytest_cache/
+*.log

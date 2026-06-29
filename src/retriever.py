@@ -2,29 +2,13 @@
 import os
 from dotenv import load_dotenv
 from pinecone import Pinecone
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from src.rbac import get_allowed_namespaces
+from src.embeddings import get_embeddings
 
 load_dotenv()
 
-# Initialize once at module level — avoids reloading model on every request
-_embeddings = None
 _pinecone_client = None
-
-
-def get_embeddings() -> HuggingFaceEmbeddings:
-    """Returns the embedding model, initializing it only once."""
-    global _embeddings
-    if _embeddings is None:
-        print("Initializing embedding model...")
-        _embeddings = HuggingFaceEmbeddings(
-            model_name="sentence-transformers/all-MiniLM-L6-v2",
-            model_kwargs={"device": "cpu"},
-            encode_kwargs={"normalize_embeddings": True}
-        )
-    return _embeddings
-
 
 def get_pinecone_client() -> Pinecone:
     """Returns the Pinecone client, initializing it only once."""
