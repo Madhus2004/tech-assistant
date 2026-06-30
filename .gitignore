@@ -32,6 +32,8 @@ Thumbs.db
 *.log
 
 notes.txt
+g-README.md
 data/
 
 .env.docker
+
